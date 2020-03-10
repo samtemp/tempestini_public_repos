@@ -1,0 +1,124 @@
+import java.util.*;
+import java.io.*;
+
+public class TwutterFileReader {
+	public static ArrayList<Tleet> tleetReader(String fname)
+	{
+		ArrayList<Tleet> tleets = new ArrayList<Tleet>();
+		ArrayList<String> lines = new ArrayList<String>();
+		
+		ArrayList<String> tag = new ArrayList<String>();
+		String line; 
+		
+		try {
+			Scanner fsc = new Scanner(new File(fname));	
+			
+			while(fsc.hasNextLine())
+			{
+				line = fsc.nextLine().trim();
+				if (line.length() > 0)
+				{
+					lines.add(line); 
+				}
+				//System.out.println(line);
+				
+			}
+			int size = lines.size();
+			String[] data = new String[size];
+
+			for(int i = 0; i < size; ++i)
+			{
+				data = lines.get(i).split("\t");
+
+				for (int k = 4; k < data.length; ++k)
+				{
+					if (data[k] != "")
+						tag.add(data[k]);
+				}
+				
+				Tleet t = new Tleet(data[0],data[1],data[2],data[3],tag);
+				tleets.add(t);
+				System.out.println(t.toString()+"\n\n");
+				
+				for (int r = data.length-1; r >= 4; --r)
+				{
+					if (data[r] != "")
+						tag.remove(data[r]);
+				}
+			
+			}
+			fsc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
+		return tleets;		
+	}
+	/*
+	public static void printTleets(String fname, ArrayList<Tleet> t)
+	{
+
+		t = TwutterFileReader.tleetReader(fname);
+		Tleet tt = new Tleet();
+		for (int i = 0; i < t.size(); ++i)
+		{
+			tt = t.get(i);
+			System.out.println(tt.toString());
+		}
+	}
+	*/
+	
+/*	
+	try{
+        BufferedReader buf = new BufferedReader(new FileReader("C:\\Users\\Sam Tempestini\\Desktop\\tleets.txt"));
+        ArrayList<String> words = new ArrayList<>();
+        ArrayList<String> usernames = new ArrayList<>();
+        String lineJustFetched = null;
+        String[] wordsArray;
+        String username;
+        int lineCnt = 1;
+        while(true){
+        	lineJustFetched = buf.readLine();
+        	while(buf.readLine() != null)
+        	{
+        		lineCnt++;
+        	}
+        	
+            if(lineJustFetched == null){  
+                break; 
+            }else{
+            	System.out.println("The line count is: " + lineCnt);
+                wordsArray = lineJustFetched.split("\t");
+              
+                username = wordsArray[0].trim();
+                if (!"Name".contentEquals(username))
+                {
+                	usernames.add(username);
+                }
+                
+                for(String each : wordsArray){
+                    if(!"".equals(each)){
+                        words.add(each);
+                    }
+                    if (!"Name".contentEquals(username))
+                    {
+                    	usernames.add(username);
+                    }
+                }
+            }
+       }
+        
+       for(String each : words)
+       {
+           System.out.println(each);
+           
+       }
+       buf.close();
+   
+	}catch(Exception e){
+        e.printStackTrace();
+    }
+*/
+}

@@ -1,0 +1,75 @@
+import java.util.*;
+
+public class Tleet {
+	
+	private String username;
+	private String date;
+	private String time;
+	private String text;
+	private ArrayList<String> hashtags = new ArrayList<String>();
+
+	Tleet()
+	{
+		username = "";
+		date = "";
+		time = "";
+		text = "";
+		hashtags = null;
+	}
+	Tleet(String username, String date, String time, String text, ArrayList<String> hashtags)
+	{
+		this.username = username; 
+		this.date = date; 
+		this.time = time; 
+		this.text = text;
+		this.hashtags = hashtags;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public ArrayList<String> getHashtags() {
+		return hashtags;
+	}
+	public void setHashtags(ArrayList<String> hashtags) {
+		this.hashtags = hashtags;
+	}
+	
+	public void printTags(ArrayList<String> hashtags)
+	{
+		for (String str : this.hashtags)
+		{
+			System.out.print("#" + str + " ");
+		}
+	}
+
+	
+	@Override 
+	public String toString()
+	{
+		return "At " + this.time  + " on " + this.date + ", " + this.username
+				 + " tleeted ...\n " + this.text + " " + this.hashtags;
+
+	
+}

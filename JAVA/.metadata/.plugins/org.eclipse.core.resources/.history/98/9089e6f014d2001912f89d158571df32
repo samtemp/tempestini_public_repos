@@ -1,0 +1,445 @@
+// Sam Tempestini
+// Raymond Klump
+// CPSC 24500-004
+// 9/16/2019
+
+package hw2_weatherApp;
+
+import java.util.Scanner;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class TempestiniWeatherApp 
+{
+	
+	public static void showMenu()
+	{
+		System.out.println("***********************************************************************");
+		System.out.println("*** Welecome to the Weather Data App For Romeville, IL 		***");
+		System.out.println("Enter 1 to see: the average maximum and minmium temperatures");
+		System.out.println("Enter 2 to see: the total precipitation");
+		System.out.println("Enter 3 to see: the highest recorded temperature");
+		System.out.println("Enter 4 to see: the lowest recorded temperature,");
+		System.out.println("Enter 5 to see: the number of days that saw thunder each year");
+		System.out.println("Enter 6 to: input a date for the high and low tremperatures");
+		System.out.println("Enter 7 to see Custom #1: how many days had servere weather");
+		System.out.println("Enter 8 to see Custom #2: the total precipitation including snow");
+		System.out.println("Enter 0 to Quit");
+		//System.out.println("");
+		System.out.println("***********************************************************************");
+	  }
+	  public static void printContentsStr(ArrayList<String> strings) 
+	  {
+	        for (String str : strings) 
+	        {
+	            System.out.println(str);
+	        }
+	  }
+	  public static void printContentsInt(ArrayList<Integer> ints) 
+	  {
+	        for (Integer inte : ints) 
+	        {
+	            System.out.println(inte);
+	        }
+	  }
+	  public static void printContentsDoub(ArrayList<Double> dou) 
+	  {
+	        for (Double doub : dou) 
+	        {
+	            System.out.println(doub);
+	        }
+	  }
+	  
+	  public static ArrayList<Integer> storeContentsInt(ArrayList<String> strings, int a, int b)
+	  {
+		  ArrayList<Integer> myInt = new ArrayList<Integer>();
+		  for (String str : strings)
+		  {  
+			 myInt.add(Integer.parseInt(str.substring(a, b).trim())); 
+		  }
+		  return(myInt); 
+	  }
+	  public static ArrayList<Integer> storeContentsInt(ArrayList<String> strings, int a)
+	  {
+		  ArrayList<Integer> myInt = new ArrayList<Integer>();
+		  for (String str : strings)
+		  {  
+			 myInt.add(Integer.parseInt(str.substring(a).trim())); 
+		  }
+		  return(myInt); 
+	  }
+	  public static ArrayList<Double>  storeContentsDoub(ArrayList<String> strings, int a, int b)
+	  {
+			  ArrayList<Double> myDoub = new ArrayList<Double>();
+			  for (String str : strings)
+			  {  
+				 myDoub.add(Double.parseDouble(str.substring(a, b).trim())); 
+			  }
+			  return(myDoub); 
+	  }
+	  public static ArrayList<String> storeContentsStr(ArrayList<String> strings, int a, int b)
+	  {
+		 ArrayList<String> myStr = new ArrayList<String>();
+		  for (String str : strings)
+		  {  
+			 myStr.add(str.substring(a, b).trim()); 
+		  }
+		  return(myStr); 
+	  }
+	  public static ArrayList<String> storeContentsStr(ArrayList<String> strings, int a)
+	  {
+		 ArrayList<String> myStr = new ArrayList<String>();
+		  for (String str : strings)
+		  {  
+			 myStr.add(str.substring(a).trim()); 
+		  }
+		  return(myStr); 
+	  }
+	  public static double avg(ArrayList<Integer> toAvg)
+	  {
+		  if (toAvg == null || toAvg.isEmpty()) 
+		  {
+		        return 0;
+		  }
+		  
+		  int sum = 0;
+		  
+		  for (Integer ave : toAvg)
+		  {
+			  sum += ave;
+		  }
+		  
+		  return (double)sum / toAvg.size();
+	  }
+	        
+	  public static void avgMaxMin(ArrayList<Integer> max, ArrayList<Integer> min)
+	  {
+		  // values rounded to 3 decimal places
+		  System.out.printf("The average maximum temperature is " + "%.03f", avg(max));
+		  System.out.printf("\nThe average minimum temperature is " + "%.03f", avg(min));
+	  }
+	  
+	  // option 2
+	  public static Double totPrcp(ArrayList<Double> tp)
+	  {
+		  double sum = 0.0;
+		  
+		  for (Double i : tp)
+		  {	
+			  // this takes care of the -9999 values
+			  if (i >= 0.0)
+			  {
+				  sum += i;
+			  }
+		  }
+		  
+		  return sum;
+	  }
+	  
+	  //option 3
+	  public static void hiTemp(ArrayList<Integer> ht)
+	  {
+		  int high = 0, test = 0;
+		  
+		  for (Integer i : ht)
+		  {
+			  test = i;
+			  if (test > high)
+			  {
+				  high = test;
+			  }
+		  }
+		  
+		  System.out.println("The highest temperature is " + high); 	  
+	  }
+	  
+	  // option 4
+	  public static void loTemp(ArrayList<Integer> lt)
+	  {
+		  int low = 100, test = 0;
+		  
+		  for (Integer i : lt)
+		  {
+			  test = i;
+			  if (test < low)
+			  {
+				  low = test;
+			  }
+		  }
+		  
+		  System.out.println("The lowest temperature is " + low);   
+	  }
+	
+	  //option 5 Saw Thunder
+	  public static Integer sawT(ArrayList<Integer> st)
+	  {
+		  Integer sum = 0;
+		  
+		  for (Integer i : st) 
+		  {
+			  if (i == 1)
+			  {
+				  sum += i;
+			  }
+		  }
+		  
+		  //System.out.println("The number of days that saw thunder are " + sum);
+		  return sum;
+	  }
+	  public static void printSawT(ArrayList<Integer> al)
+	  {
+		  Integer sum = sawT(al);
+		  System.out.println("The number of days that saw thunder are " + sum);
+	  }
+	  // Option 6
+	  public static void hiLo(ArrayList<String> dateStr, ArrayList<String> maxtStr, ArrayList<String> mintStr)
+	  {
+    	  try {
+		       System.out.print("Enter a date using YYYYMMDD format: ");
+		       Scanner sc = new Scanner(System.in);
+		       String input = sc.next();
+		       //System.out.println(input);
+		       boolean valid = true;
+		       int test = Integer.parseInt(input),
+		    		   minD = 20190101,
+		    		   maxD = 20190828;
+		       if (test < minD || test > maxD)
+		       {
+		    	   System.out.println("No data exists for this date");
+		    	   valid = false;
+		       }
+		       else if (valid = true)
+		       {
+			       int index = 0;
+			       for(int i = 0; i < dateStr.size();  ++i)
+			       {
+			    	   if (input.equals(dateStr.get(i)))
+			    	   {
+			    		   index = i;
+			    		   //System.out.println(dateStr.get(i));
+			    		   break;
+			    	   }
+			       }
+		       
+			       System.out.println("On " + dateStr.get(index) 
+			       		+ " The highest temperature was " + maxtStr.get(index) 
+			    		+ " degrees and the lowest temperature was " + mintStr.get(index)
+			    		+ " degrees.");
+		       }
+
+	       }catch(Exception e)
+	       {
+	    	   System.out.println("Error");
+	    	   e.printStackTrace();
+	       }
+	  }
+	        
+	  public static void main(String[] args) throws IOException 
+	  {
+	  // Data 
+			// Station
+		  	ArrayList<String> station = new ArrayList<String>();
+			// Station name
+			ArrayList<String> stationName = new ArrayList<String>();
+			// Date
+			ArrayList<Integer> date =  new ArrayList<Integer>();
+			// Maximum temperatures 
+			ArrayList<Integer> tmax =  new ArrayList<Integer>();
+			// Minimum temperatures
+			ArrayList<Integer> tmin =  new ArrayList<Integer>();
+			// Fog, ice fog, or freezing fog (may include heavy fog)
+			ArrayList<Integer> wt01 =  new ArrayList<Integer>();
+			// Glaze or rime
+			ArrayList<Integer> wt06 =  new ArrayList<Integer>();
+			// Hail (may include small hail)
+			ArrayList<Integer> wt05 =  new ArrayList<Integer>();
+			// High or damaging winds
+			ArrayList<Integer> wt11 =  new ArrayList<Integer>();
+			// Ice pellets, sleet, snow pellets, or small hail
+			ArrayList<Integer> wt04 =  new ArrayList<Integer>();
+			// Thunder
+			ArrayList<Integer> wt03 =  new ArrayList<Integer>();
+			// Precipitation
+			ArrayList<Double> prcp = new ArrayList<Double>();
+			// Snowfall
+			ArrayList<Double> snow = new ArrayList<Double>();
+			// Full data record
+			ArrayList<String> record = new ArrayList<String>();
+			// Str lists used for certain functions
+			ArrayList<String> dateStr = new ArrayList<String>();
+			ArrayList<String> maxtStr = new ArrayList<String>();
+			ArrayList<String> mintStr = new ArrayList<String>();
+			
+			// variable for menu selection
+			int func;
+			
+			String fname;
+			Scanner sc = new Scanner(System.in);
+			System.out.print("Enter name of file: ");
+			fname = sc.nextLine();
+			// file name
+			// C:\Windows\Temp\weather_data.txt
+			File f = new File(fname);
+	       
+	       String line;
+	       ArrayList<String> lines = new ArrayList<String>();
+	       try {
+	            Scanner fsc = new Scanner(f);
+	            fsc.nextLine();
+	            fsc.nextLine();
+	            while (fsc.hasNextLine()) {
+	                line = fsc.nextLine().trim();
+	                lines.add(line);
+	            }
+	            fsc.close();
+	            /*
+	            System.out.println("Now going to print ...");
+	            printContentsStr(lines);
+	            System.out.println("Now sorted ...");
+	            Collections.sort(lines);
+	            printContentsStr(lines);
+	            */
+	       } catch (Exception ex) 
+	       {
+	            System.out.println("Couldn't read file.");
+	       }
+	       
+	       // populates ArraysLists
+	       try {
+				station = storeContentsStr(lines, 0, 17);
+				//printContentsStr(station);
+				stationName = storeContentsStr(lines, 18, 68);
+				//printContentsStr(stationName);
+				date = storeContentsInt(lines, 69, 77);
+				//printContentsInt(date);
+				prcp = storeContentsDoub(lines, 78, 86);
+				//printContentsDoub(prcp);
+				snow = storeContentsDoub(lines, 87, 95);
+				//printContentsDoub(snow);
+				tmax = storeContentsInt(lines, 96, 104);
+				//printContentsInt(tmax);
+				tmin = storeContentsInt(lines, 105, 113);
+				// printContentsInt(tmin);
+				wt01 = storeContentsInt(lines, 114, 122);
+				// printContentsInt(wt01);
+				wt06 = storeContentsInt(lines, 123, 131);
+				//printContentsInt(wt06);
+				wt05 = storeContentsInt(lines, 132, 140);
+				//printContentsInt(wt05);
+				wt11 = storeContentsInt(lines, 141, 149);
+				//printContentsInt(wt11);
+				wt04 = storeContentsInt(lines, 150, 158);
+				// printContentsInt(wt04);
+				wt03 = storeContentsInt(lines, 159);
+				//printContentsInt(wt03);	    
+				record = storeContentsStr(lines, 0);
+				//printContentStr(record);
+
+		       dateStr = storeContentsStr(lines, 69, 77);
+		       maxtStr = storeContentsStr(lines, 96, 104);
+		       mintStr = storeContentsStr(lines, 105, 113);
+		      
+	       }catch(Exception e)
+	       {
+	    	   System.out.println("Items not copied successfully.");
+	    	   e.printStackTrace();
+	       }
+
+	       try {
+		       do {
+		    	   showMenu();
+		    	   System.out.println("Select your choice: ");
+		    	   sc.nextLine();
+		    	   func = sc.nextInt();
+		    	   
+		    	   if (func == 1)
+		    	   {
+		    	   		//Complete -- SRT 9/4
+		    		   	avgMaxMin(tmax,tmin);
+		    	   }
+		    	   else if (func == 2)
+		    	   {
+		    	   		// Complete -- SRT 9/4
+		    		   	Double totP = totPrcp(prcp);
+			   			System.out.printf("\nThe total precipitation is " + "%.03f" , totP);
+		    	   }
+		    	   else if (func == 3)
+		    	   {
+		    	   		// Complete -- SRT 9/4
+		    		   	hiTemp(tmax);
+		    	   }
+		    	   else if (func == 4)
+		    	   {
+		    		   // Complete -- SRT 9/4
+		    		   loTemp(tmin);
+		    	   }
+		    	   else if (func == 5)
+		    	   {
+		    	   		// Complete -- SRT 9/4
+		    		   	printSawT(wt03);
+		    	   }
+		    	   else if (func == 6)
+		    	   {
+		    		   // Complete -- SRT 9/8
+		    		   hiLo(dateStr, maxtStr, mintStr);
+		    	   }
+		    	   else if (func == 7)
+		    	   {
+		    		   	// Complete -- SRT 9/8
+		    	   		// Custom #1
+		    	   		/*
+		    	   		  Custom function 1 gives the user the sum of the days that have any of the following occurred:
+		    	   		  	WT11 - High or damaging winds
+		  				  	WT01 - Fog, ice fog, or freezing fog	  
+		    	   		  	WT03 - Thunder	
+		    	   		  	WT04 - Ice pellets, sleet, snow pellets, or small
+							WT05 - Hail
+						  	WT06 - Glaze or rime
+						  */  
+
+		       			   Integer tot, add;
+		       			   tot = sawT(wt01);
+					       add = sawT(wt03);
+					       tot += add;
+					       sawT(wt04);
+					       tot += add;
+					       sawT(wt05);
+					       tot += add;
+					       sawT(wt06);
+					       tot += add;
+					       sawT(wt11);
+					       tot += add;
+					       System.out.println("The amount of days with severe weather were " + tot);
+					     
+		    	   }
+		    	   else if (func == 8)
+		    	   {
+		    		   // Complete -- SRT 9/8
+		    		   //Custom #2;
+		    		   //Custom function 2 gives the user the total prcp + snow
+		    		    
+		       			Double total = totPrcp(prcp);
+		       			total += totPrcp(snow);
+		       			System.out.printf("\nThe total precipitation including snow is " + "%.03f" , total);
+		    	   }
+		    	   else if (func == 0)
+		    	   {
+		    		   System.out.println("Good bye!");
+		    		   System.exit(0);
+		    	   }
+		    	   else 
+		    	   {
+		    		   System.exit(1);
+		    	   }
+		       } while (func != 0);
+		       }catch(Exception exp)
+		       {
+		    	   System.out.println("Something went wrong.");
+		       }
+			   sc.close();  
+			   System.exit(0);
+	  }
+
+}

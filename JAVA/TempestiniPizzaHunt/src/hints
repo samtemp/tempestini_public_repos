@@ -1,0 +1,32 @@
+LinkedHashedMap<String,String> neighbors
+	"N" --> "hallway"
+	"S" --> ""
+	"E" --> "dining room"
+	"S" --> ""
+
+GameManager{
+	randomly placing the bear and the pizza
+		use Random class's randint function to generate an integer in the range 
+		of 0 to the size() of the array list of rooms
+	update the position of the bear
+	check for when the bear and the pizza are in the same room
+	play game funtion
+		asks the user for the move
+		updates the room of the bear
+		it checks for a win
+	
+}
+
+Main{
+	read in the rooms from the file - RoomReader that has a function that 
+	returns ArrayList <Room> objects
+	create the GameManager, passing it the array of Room Objects
+	do{
+		show the menu of options
+		if c == 1 
+			tell game manager to play game
+		else if c == 2
+			print the contents of the array list of room to the screen
+	}while the user doesn't want to quit
+	
+}

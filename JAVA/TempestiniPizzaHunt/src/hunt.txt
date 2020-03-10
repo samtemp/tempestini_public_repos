@@ -1,0 +1,6 @@
+Family Room	where family gathers to argue	 	 	Hallway	 		
+Hallway	where the cabinet with the junk drawer is	 	 	Kitchen	Family Room
+Kitchen	where we microwave frozen meals	 	Entrance	Dining Room	Hallway
+Entrance	where people enter at their own risk	Kitchen	 	Living Room	 
+Living Room	where people live out their days until they die	Dining Room	 	 	Entrance
+Dining Room	where we dine on tuna and spam ... and flava beans	 	Living Room	 	Kitchen

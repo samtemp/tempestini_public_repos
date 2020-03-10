@@ -1,0 +1,202 @@
+/*
+  	Author: 	Sam Tempestini
+	Teacher: 	Raymond Klump
+	Course:		CPSC 24500-004
+ 	Date:		10/01/2019
+ 	Descr:		This is a menu driven program that receives a tleet data txt file with fully qualified path
+ 	 			name as input. 
+ */
+import java.io.*;
+import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+
+public class TempestiniTlutterApp {
+
+	public static void showMenu()
+	{
+		System.out.println("********************************************************************");
+		System.out.println("**** Welcome to Tlutter - LU's Opinion and Fake News Authority! ****");
+		System.out.println("********************************************************************");
+		System.out.println("Here are your options: ");
+		System.out.println("1. See a list of all tleets");
+		System.out.println("2. See a list of all tleets from a particular day or days");
+		System.out.println("3. See a list of tleets by a particular user");
+		System.out.println("4. See list of all tleets with a particular hashtag");
+		System.out.println("5. Tleet to your peeps");
+		System.out.println("6. Write your tleets to a file");
+		System.out.println("7. Exit");
+		System.out.println("********************************************************************");
+	}
+	// ‪C:\Users\Sam Tempestini\Desktop\tleets.txt
+	// ‪C:\val\tleets.txt
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		int choice = 0;
+	
+		ArrayList<Tleet> test = new ArrayList<Tleet>();
+		test = TwutterFileReader.readTleet();
+		
+		String st = "coffee\tstudy\twaketfup";
+		
+		String [] tags = st.split("\t");
+		List<String> taged = Arrays.asList(tags);
+		ArrayList<String> ht = new ArrayList<String>();
+		for (int i= 0; i < taged.size(); ++i)
+		{
+			ht.add(taged.get(i));
+		}
+	
+		Tleet me = new Tleet("BigTea","20190921","1:25","I'm wired", new ArrayList<String>());
+		Tleet you = new Tleet("BigTea","20190921","1:22","I'm wired", ht);
+		System.out.println(me.toString());
+		System.out.println(you.toString());
+		ArrayList<Tleet> peepTleets = new ArrayList<Tleet>();
+		
+		Scanner sc = new Scanner(System.in);
+		do {
+			showMenu();
+			try {
+				System.out.print("\nEnter your selection: ");
+				choice = sc.nextInt();
+				Scanner in = new Scanner(System.in);
+				if (choice == 1)
+				{
+					// Simply prints all the tleets from the txt file in a structured way.
+					System.out.println("Here is a list of all tleets: ");
+					TwutterFileReader.printTleetFormat(test);			
+				}
+				else if (choice == 2)
+				{
+					System.out.println("Enter start and end date: ");
+					String start, end;
+					start = in.next();
+					end = in.next();
+					ArrayList<Tleet> dayRange = new ArrayList<Tleet>();
+					int strt, ed;
+					strt = Integer.parseInt(start);
+					ed = Integer.parseInt(end);
+					int day;
+					String date;
+					
+					for (Tleet tDay : test)
+					{
+						date = tDay.getDate();
+						day = Integer.parseInt(date);
+						
+						// Checks the date range before adding to arraylist
+						if(day >= strt && day <= ed)
+						{
+							dayRange.add(tDay);
+						}
+						
+					}
+					if (dayRange.isEmpty())
+							System.out.println("no tleets posted between: " 
+									+ start + " and " + end);
+					else
+						System.out.println("Here is a list of all tleets between " 
+							+ start + " and " + end + ":");
+					// seeing is believing print the results
+					TwutterFileReader.printTleetFormat(dayRange);
+					
+				}
+				else if (choice == 3)
+				{
+					System.out.println("Enter the name of a user: ");
+					String user = in.next();
+					ArrayList<Tleet> users = new ArrayList<Tleet>();
+					for (Tleet tlt : test)
+					{
+						// checks username against input
+						if(user.equals(tlt.getUsername()))
+							users.add(tlt);
+					}
+					if (users.isEmpty())
+						System.out.println("The user " + user + " hasn't posted any tleets");
+					else
+						System.out.println("Here are all of the tleets posted by " + user + ":");
+					TwutterFileReader.printTleetFormat(users);
+			
+				}
+				else if (choice == 4)
+				{
+					System.out.println("Enter a hashtag to view tleet that include the tag: ");
+					String containsTag = in.next();
+					ArrayList<Tleet> tagged = new ArrayList<Tleet>();
+					for (Tleet tlt: test)
+					{
+						if(tlt.hasHashTag(containsTag) == true)
+							tagged.add(tlt);
+					}
+					if (tagged.isEmpty())
+						System.out.println("There are no tleets that contain #" + containsTag);
+					else
+						System.out.println("Here are all of the tleets that contain #" + containsTag + ":");
+					TwutterFileReader.printTleetFormat(tagged);
+
+				}
+				else if (choice == 5)
+				{
+					String un, dt, tm, tx, 
+						pt="\t\t\t\t";
+					
+					LocalTime time = LocalTime.now();
+					tm = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+					DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+			        Date date = new Date();
+			        dt = dateFormat.format(date);
+					
+					ArrayList<String> pTags = new ArrayList<String>();
+					System.out.println("Tleet to your peeps!");
+					System.out.print("Enter your username: ");
+					un = in.nextLine();
+					System.out.print("\nEnter your tleet: ");
+					tx = in.nextLine();
+					System.out.print("\nEnter your hashtags delimited by tabs: ");
+					pt += in.nextLine();
+					
+					pTags = TleetParser.qryTags(pt); 
+					Tleet peep = new Tleet(un, dt, tm, tx, pTags);
+					peep.toString();
+					peepTleets.add(peep);
+					
+					//print result results
+					System.out.println();
+					TwutterFileReader.printTleetFormat(peepTleets);
+
+				}
+				else if (choice == 6)
+				{
+					System.out.println("Let try to write your peep tleets to a file.");
+					if (peepTleets.isEmpty())
+						System.out.println("No tleets exist.");
+					else
+					{
+						System.out.println("Enter tthe output file path: ");
+						String outputFile = in.nextLine();
+						TleetWriter.printTleetsToTextFile(peepTleets, outputFile);	
+					}
+						
+					
+				}
+				else if (choice == 7)
+				{
+					System.out.println("You have chosen wisely...Exiting Program");
+				}
+				
+			}catch(Exception ex)
+			{
+				// hope you like Indiana Jones 
+				System.out.println("You have chosen poorly...Exiting Program");
+				System.exit(1);
+				sc.close();
+			}	
+		}while(choice != 7);
+		System.exit(0);
+
+	}
+}
